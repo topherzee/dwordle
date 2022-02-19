@@ -184,13 +184,13 @@ function App() {
       }, ALERT_TIME_MS)
     }
 
-    if (!isWordInWordList(currentGuess)) {
-      showErrorAlert(WORD_NOT_FOUND_MESSAGE)
-      setCurrentRowClass('jiggle')
-      return setTimeout(() => {
-        setCurrentRowClass('')
-      }, ALERT_TIME_MS)
-    }
+    // if (!isWordInWordList(currentGuess)) {
+    //   showErrorAlert(WORD_NOT_FOUND_MESSAGE)
+    //   setCurrentRowClass('jiggle')
+    //   return setTimeout(() => {
+    //     setCurrentRowClass('')
+    //   }, ALERT_TIME_MS)
+    // }
 
     // enforce hard mode - all guesses must contain all previously revealed letters
     if (isHardMode) {
