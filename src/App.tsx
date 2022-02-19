@@ -14,6 +14,7 @@ import {
   WIN_MESSAGES,
   GAME_COPIED_MESSAGE,
   NOT_ENOUGH_LETTERS_MESSAGE,
+  WORD_NOT_FOUND_MESSAGE,
   CORRECT_WORD_MESSAGE,
   HARD_MODE_ALERT_MESSAGE,
 } from './constants/strings'
@@ -24,7 +25,12 @@ import {
   REVEAL_TIME_MS,
   GAME_LOST_INFO_DELAY,
 } from './constants/settings'
-import { isWinningWord, solution, findFirstUnusedReveal } from './lib/words'
+import {
+  isWordInWordList,
+  isWinningWord,
+  solution,
+  findFirstUnusedReveal,
+} from './lib/words'
 import { addStatsForCompletedGame, loadStats } from './lib/stats'
 import {
   loadGameStateFromLocalStorage,
@@ -178,13 +184,26 @@ function App() {
       }, ALERT_TIME_MS)
     }
 
-    // if (!isWordInWordList(currentGuess)) {
-    //   showErrorAlert(WORD_NOT_FOUND_MESSAGE)
-    //   setCurrentRowClass('jiggle')
-    //   return setTimeout(() => {
-    //     setCurrentRowClass('')
-    //   }, ALERT_TIME_MS)
-    // }
+    //double wordle - make sure eaach word is a word!
+    const firstWord = currentGuess.substring(0, 5)
+    const secondWord = currentGuess.substring(5, 11)
+    console.log(firstWord + ' ' + secondWord)
+    if (!isWordInWordList(firstWord)) {
+      debugger
+      showErrorAlert('First ' + WORD_NOT_FOUND_MESSAGE)
+      setCurrentRowClass('jiggle')
+      return setTimeout(() => {
+        setCurrentRowClass('')
+      }, ALERT_TIME_MS)
+    }
+
+    if (!isWordInWordList(secondWord)) {
+      showErrorAlert('Second ' + WORD_NOT_FOUND_MESSAGE)
+      setCurrentRowClass('jiggle')
+      return setTimeout(() => {
+        setCurrentRowClass('')
+      }, ALERT_TIME_MS)
+    }
 
     // enforce hard mode - all guesses must contain all previously revealed letters
     if (isHardMode) {
